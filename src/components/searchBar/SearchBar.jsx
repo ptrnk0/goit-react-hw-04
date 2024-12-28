@@ -1,18 +1,20 @@
 import toast from "react-hot-toast";
 
-const errorNotify = () => toast.error("The field must not be empty");
+const errorNotify = () => toast.error("The field must not be empty.");
 
-const SearchBar = ({ onSubmit }) => {
+const SearchBar = ({ onSearch }) => {
 	const handleSubmit = (evt) => {
 		evt.preventDefault();
-		const userInput = evt.target.elements.search.value;
+		const searhInput = evt.target;
+		const userQuery = searhInput.elements.search.value;
 
-		if (userInput.trim() === "") {
+		if (userQuery.trim() === "") {
 			errorNotify();
 			return;
 		}
 
-		onSubmit(userInput);
+		onSearch(userQuery);
+		searhInput.reset();
 	};
 
 	return (
