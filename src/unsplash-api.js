@@ -15,7 +15,7 @@ const getImages = async (query, page = 1) => {
 		},
 	});
 
-	return response.data.results;
+	return response.data;
 };
 
 export default getImages;
