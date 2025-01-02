@@ -7,6 +7,7 @@ import { Toaster } from "react-hot-toast";
 import { useEffect, useState } from "react";
 import { LineWave } from "react-loader-spinner";
 import css from "./App.module.css";
+import ImageModal from "../imageModal/ImageModal";
 
 const App = () => {
 	const [images, setImages] = useState([]);
@@ -16,13 +17,16 @@ const App = () => {
 	const [hasMore, setHasMore] = useState(false);
 	const [query, setQuery] = useState("");
 	const [modalIsOpen, setIsOpen] = useState(false);
+	const [modalImage, setModalImage] = useState(null);
 
-	const handleOpenModal = () => {
+	const handleOpenModal = (image) => {
 		setIsOpen(true);
+		setModalImage(image);
 	};
 
 	const handleCloseModal = () => {
 		setIsOpen(false);
+		setModalImage(null);
 	};
 
 	const handleSearch = (userQuery) => {
@@ -63,14 +67,19 @@ const App = () => {
 			<header className={css.header}>
 				<SearchBar onSearch={handleSearch} />
 			</header>
-			<main>
+			<main className={css.main}>
 				{error && <ErrorMessage />}
 				{images && (
 					<ImageGallery
 						images={images}
-						onCloseModal={handleCloseModal}
 						onOpenModal={handleOpenModal}
+					/>
+				)}
+				{modalImage && (
+					<ImageModal
 						value={modalIsOpen}
+						onCloseModal={handleCloseModal}
+						image={modalImage}
 					/>
 				)}
 				{loader && <LineWave />}
