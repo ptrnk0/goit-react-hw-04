@@ -1,11 +1,12 @@
 import ImageGallery from "../imageGallery/ImageGallery";
 import SearchBar from "../searchBar/SearchBar";
 import ErrorMessage from "../errorMessage/ErrorMessage";
+import LoadMoreBtn from "../loadMoreBtn/LoadMoreBtn";
 import getImages from "../../unsplash-api";
 import { Toaster } from "react-hot-toast";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LineWave } from "react-loader-spinner";
-import LoadMoreBtn from "../loadMoreBtn/LoadMoreBtn";
+import css from "./App.module.css";
 
 const App = () => {
 	const [images, setImages] = useState([]);
@@ -15,40 +16,41 @@ const App = () => {
 	const [hasMore, setHasMore] = useState(false);
 	const [query, setQuery] = useState("");
 
-	const handleSearch = async (userQuery) => {
-		try {
-			setImages([]);
-			setError(false);
-			setLoader(true);
-			setQuery(userQuery);
-			const data = await getImages(userQuery);
-			setHasMore(data.total_pages > currentPage);
-			setImages(data.results);
-		} catch (error) {
-			setError(true);
-		} finally {
-			setLoader(false);
-		}
+	const handleSearch = (userQuery) => {
+		setImages([]);
+		setQuery(userQuery);
+		setCurrentPage(1);
 	};
 
-	const handleClickLoadMore = async () => {
-		try {
-			setCurrentPage((prev) => prev + 1);
-			setLoader(true);
-			const data = await getImages(query, currentPage + 1);
-			setHasMore(data.total_pages > currentPage + 1);
-			setImages((prev) => [...prev, ...data.results]);
-		} catch (error) {
-			setError(true);
-		} finally {
-			setLoader(false);
-		}
+	const handleClickLoadMore = () => {
+		setCurrentPage((prev) => prev + 1);
 	};
+
+	useEffect(() => {
+		if (!query) return;
+
+		async function fetchImages() {
+			try {
+				setError(false);
+				setLoader(true);
+				const data = await getImages(query, currentPage);
+				setHasMore(data.total_pages > currentPage);
+
+				setImages((prev) => [...prev, ...data.results]);
+			} catch (error) {
+				setError(true);
+			} finally {
+				setLoader(false);
+			}
+		}
+
+		fetchImages();
+	}, [query, currentPage]);
 
 	return (
 		<>
 			<Toaster />
-			<header>
+			<header className={css.header}>
 				<SearchBar onSearch={handleSearch} />
 			</header>
 			<main>
