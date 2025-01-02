@@ -12,6 +12,7 @@ const getImages = async (query, page = 1) => {
 		params: {
 			query,
 			page,
+			per_page: 12,
 		},
 	});
 
