@@ -1,4 +1,5 @@
 import toast from "react-hot-toast";
+import css from "./SearchBar.module.css";
 
 const errorNotify = () => toast.error("The field must not be empty.");
 
@@ -18,7 +19,7 @@ const SearchBar = ({ onSearch }) => {
 	};
 
 	return (
-		<form onSubmit={handleSubmit}>
+		<form onSubmit={handleSubmit} className={css.searchBar}>
 			<input
 				type="text"
 				autoComplete="off"
