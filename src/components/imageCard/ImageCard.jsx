@@ -1,8 +1,8 @@
 import ImageModal from "../imageModal/ImageModal";
 import { useState } from "react";
 import css from "./ImageCard.module.css";
-
 import Modal from "react-modal";
+
 Modal.setAppElement("#root");
 
 const ImageCard = ({ urls, description }) => {
