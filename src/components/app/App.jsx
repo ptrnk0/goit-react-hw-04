@@ -15,8 +15,18 @@ const App = () => {
 	const [currentPage, setCurrentPage] = useState(1);
 	const [hasMore, setHasMore] = useState(false);
 	const [query, setQuery] = useState("");
+	const [modalIsOpen, setIsOpen] = useState(false);
+
+	const handleOpenModal = () => {
+		setIsOpen(true);
+	};
+
+	const handleCloseModal = () => {
+		setIsOpen(false);
+	};
 
 	const handleSearch = (userQuery) => {
+		if (query === userQuery) return;
 		setImages([]);
 		setQuery(userQuery);
 		setCurrentPage(1);
@@ -49,13 +59,20 @@ const App = () => {
 
 	return (
 		<>
-			<Toaster />
+			<Toaster position="top-right" reverseOrder={false} />
 			<header className={css.header}>
 				<SearchBar onSearch={handleSearch} />
 			</header>
 			<main>
 				{error && <ErrorMessage />}
-				{images && <ImageGallery images={images} />}
+				{images && (
+					<ImageGallery
+						images={images}
+						onCloseModal={handleCloseModal}
+						onOpenModal={handleOpenModal}
+						value={modalIsOpen}
+					/>
+				)}
 				{loader && <LineWave />}
 				{hasMore && <LoadMoreBtn onClick={handleClickLoadMore} />}
 			</main>
