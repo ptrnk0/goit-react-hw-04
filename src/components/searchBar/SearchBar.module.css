@@ -22,13 +22,13 @@
     padding: 10px 22px;
     border: none;
     border-radius: 4px;
-    background-color: rgb(255, 216, 164);
+    background-color: var(--btn-color);
     cursor: pointer;
-    transition: box-shadow 250ms ease-in-out, background-color 250ms ease-in-out;
+    transition: var(--btn-transition);
 }
 
 .searchBarBtn:hover,
 .searchBarBtn:focus {
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
-    background-color: rgb(253, 207, 147);
+    box-shadow: var(--btn-hover-shadow);
+    background-color: var(--btn-hover-color)
 }
