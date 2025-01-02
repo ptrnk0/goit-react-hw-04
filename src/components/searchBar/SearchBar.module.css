@@ -1,1 +1,19 @@
-.searchBar {}
+.searchBar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.searchBarInput {
+    background-color: antiquewhite;
+    border: none;
+    border-bottom: 1px solid black;
+    outline: none;
+    width: 240px;
+    padding: 10px 20px;
+}
+
+.searchBarInput::placeholder {
+    text-align: center;
+}
