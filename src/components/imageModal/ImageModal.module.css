@@ -1,8 +1,8 @@
 .modalOverlay {
+    z-index: 2;
     position: fixed;
     inset: 0px;
     background-color: rgba(110, 110, 110, 0.75);
-
 }
 
 .modalContent {
@@ -10,13 +10,8 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
-.modalImgContainer {
-    padding: 30px;
-}
+.modalImgContainer {}
 
 .modalImg {}

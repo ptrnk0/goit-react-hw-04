@@ -3,7 +3,7 @@ import Modal from "react-modal";
 
 Modal.setAppElement("#root");
 
-const ImageModal = ({ urls, description, onCloseModal, value }) => {
+const ImageModal = ({ image, onCloseModal, value }) => {
 	return (
 		<Modal
 			isOpen={value}
@@ -14,8 +14,8 @@ const ImageModal = ({ urls, description, onCloseModal, value }) => {
 		>
 			<div onClick={onCloseModal} className={css.modalImgContainer}>
 				<img
-					src={urls.regular}
-					alt={description}
+					src={image.urls.regular}
+					alt={image.description}
 					className={css.modalImg}
 				/>
 			</div>
