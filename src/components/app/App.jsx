@@ -5,7 +5,7 @@ import LoadMoreBtn from "../loadMoreBtn/LoadMoreBtn";
 import getImages from "../../unsplash-api";
 import { Toaster } from "react-hot-toast";
 import { useEffect, useState } from "react";
-import { LineWave } from "react-loader-spinner";
+import { RotatingSquare } from "react-loader-spinner";
 import css from "./App.module.css";
 import ImageModal from "../imageModal/ImageModal";
 
@@ -82,7 +82,15 @@ const App = () => {
 						image={modalImage}
 					/>
 				)}
-				{loader && <LineWave />}
+				{loader && (
+					<RotatingSquare
+						color="rgb(255, 216, 164)"
+						wrapperStyle={{
+							display: "flex",
+							justifyContent: "center",
+						}}
+					/>
+				)}
 				{hasMore && <LoadMoreBtn onClick={handleClickLoadMore} />}
 			</main>
 		</>
