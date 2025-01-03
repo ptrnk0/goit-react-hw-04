@@ -3,11 +3,13 @@ import SearchBar from "../searchBar/SearchBar";
 import ErrorMessage from "../errorMessage/ErrorMessage";
 import LoadMoreBtn from "../loadMoreBtn/LoadMoreBtn";
 import getImages from "../../unsplash-api";
-import { Toaster } from "react-hot-toast";
-import { useEffect, useState } from "react";
+import { Toaster, toast } from "react-hot-toast";
+import { useEffect, useState, useRef } from "react";
 import { RotatingSquare } from "react-loader-spinner";
 import css from "./App.module.css";
 import ImageModal from "../imageModal/ImageModal";
+
+const errorNotify = () => toast.error("No results found");
 
 const App = () => {
 	const [images, setImages] = useState([]);
@@ -18,6 +20,9 @@ const App = () => {
 	const [query, setQuery] = useState("");
 	const [modalIsOpen, setIsOpen] = useState(false);
 	const [modalImage, setModalImage] = useState(null);
+
+	const galleryRef = useRef();
+	const loadMoreRef = useRef();
 
 	const handleOpenModal = (image) => {
 		setIsOpen(true);
@@ -48,8 +53,12 @@ const App = () => {
 				setError(false);
 				setLoader(true);
 				const data = await getImages(query, currentPage);
-				setHasMore(data.total_pages > currentPage);
 
+				if (data.results.length < 1) {
+					return errorNotify();
+				}
+
+				setHasMore(data.total_pages > currentPage);
 				setImages((prev) => [...prev, ...data.results]);
 			} catch (error) {
 				setError(true);
@@ -60,6 +69,18 @@ const App = () => {
 
 		fetchImages();
 	}, [query, currentPage]);
+
+	useEffect(() => {
+		if (images.length > 0 && hasMore) {
+			loadMoreRef.current.scrollIntoView({ behavior: "smooth" });
+		} else if (!hasMore) {
+			galleryRef.current.scrollIntoView({
+				block: "end",
+				inline: "nearest",
+				behavior: "smooth",
+			});
+		}
+	}, [images, hasMore, currentPage]);
 
 	return (
 		<>
@@ -73,6 +94,7 @@ const App = () => {
 					<ImageGallery
 						images={images}
 						onOpenModal={handleOpenModal}
+						ref={galleryRef}
 					/>
 				)}
 				{modalImage && (
@@ -91,7 +113,12 @@ const App = () => {
 						}}
 					/>
 				)}
-				{hasMore && <LoadMoreBtn onClick={handleClickLoadMore} />}
+				{hasMore && (
+					<LoadMoreBtn
+						onClick={handleClickLoadMore}
+						ref={loadMoreRef}
+					/>
+				)}
 			</main>
 		</>
 	);
